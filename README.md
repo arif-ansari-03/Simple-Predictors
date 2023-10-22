@@ -1,1 +1,1 @@
-Using machine learning models to predict various types of data (linear, polynomial, exponential, etc)
+Using machine learning models in pytorch to predict various types of data (linear, polynomial, exponential, etc)
