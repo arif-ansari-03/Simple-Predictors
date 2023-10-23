@@ -19,6 +19,7 @@ class XYLine:
     def write_data(self, file_name):
         with open(file_name, 'w', newline = '') as csv_file:
             file_writer = csv.writer(csv_file)
+            file_writer.writerow(['x', 'y'])
             for x in self.X:
                 file_writer.writerow([x, self.a*x+self.b])
 
@@ -27,5 +28,5 @@ class XYLine:
         self.write_data(file_name)
 
 
-XYLine(5, 0).gen_data(4, (1, 4), "Line Predictor/FFN/train.csv")
+XYLine(5, 0).gen_data(4, (1, 4), "Linear Predictor/FFN/train.csv")
         
