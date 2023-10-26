@@ -16,36 +16,46 @@ class Train:
             for row in csv_reader:
                 rows.append(row)
 
-        label = rows[0]
-        data = torch.tensor(np.asarray(rows[1:], dtype = float))
+        self.label = rows[0]
+        self.data = torch.tensor(np.asarray(rows[1:], dtype = float), dtype = torch.float32)
 
-        self.input_label = label[:1]
-        self.output_label = label[1:]
+        # print(self.data)
+        # self.input_label = label[:1]
+        # self.output_label = label[1:]
 
-        input_data = data.T[:1]
-        output_data = data.T[1:]
+        # self.split_data(0.5)
+        # print(self.train)
+        # print(self.val)
+        
 
-        self.input_data = input_data.T
-        self.output_data = output_data.mT
+    def make_nn(self, model):
+        self.model = model
 
-        print(self.input_label)
-        print(self.input_data)
+    def split_data(self, ratio, col_split):  #split the data into two subsets, ratio = ratio of train to val
+        DT = self.data[torch.randperm(self.data.size()[0])]
+        l = int(len(self.data)*ratio)
+        self.train = DT[:l]
+        self.val = DT[l:]
 
-        print(self.output_label)
-        print(self.output_data)
+        self.input_label = self.label[:col_split]
+        self.output_label = self.label[col_split:]
 
-    def make_nn(num_input, num_output):
-        self.model = nn.sequential
-        (
-            nn.Linear(num_input, num_output)
-        )
+        self.x_train = self.train.mT[:col_split].mT
+        self.y_train = self.train.mT[col_split:].mT
+        self.x_val = self.val.mT[:col_split].mT
+        self.y_val = self.val.mT[col_split:].mT
 
-    def split_data(self):  #split the data into two subset objects
-        DT = torch.utils.data.random_split(self.output_data, [0.5, 0.5])
-        self.x_train, self.x_val = torch.tensor(DT) #use torch.tensor(<subset object>) to convert into objects
-        print(self.x_train)
-        print(self.x_val)  # IMPORTANT TODO: SPLIT DATA BEFORE SPLITTING INTO INPUT AND OUTPUT DATA
+    def grad_descent(self):
+        
 
 T = Train("Linear Predictor/FFN/train.csv")
 T.read_file()
-T.split_data()
+T.split_data(0.5, 1)
+
+model = nn.Sequential(
+    nn.Linear(1, 1)
+)
+
+T.make_nn(model)
+T.grad_descent()
+
