@@ -28,5 +28,5 @@ class XYLine:
         self.write_data(file_name)
 
 
-XYLine(5, 0).gen_data(4, (1, 4), "Linear Predictor/FFN/train.csv")
+XYLine(5, 0).gen_data(1000, (1, 4), "Linear Predictor/FFN/train.csv")
         
